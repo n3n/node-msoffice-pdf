@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Office.Core;
 using Word = Microsoft.Office.Interop.Word;
 using Excel = Microsoft.Office.Interop.Excel;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+// using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 
 public class Startup
@@ -31,7 +31,7 @@ public class Startup
 
     Word.Application msword;
     Excel.Application msexcel;
-    PowerPoint.Application mspowerpoint;
+    // PowerPoint.Application mspowerpoint;
     TaskFactory scheduler;
     public async Task<object> Invoke(object input)
     {
@@ -40,7 +40,7 @@ public class Startup
         return new { 
           word = (Func<object,Task<dynamic>>)word,
           excel = (Func<object,Task<dynamic>>)excel,
-          powerPoint = (Func<object,Task<dynamic>>)powerPoint,
+        //   powerPoint = (Func<object,Task<dynamic>>)powerPoint,
           close = (Func<object,Task<dynamic>>)close,
         };
     }
@@ -74,19 +74,7 @@ public class Startup
         }
     }
     
-    private void CreatePowerPoint() {
-        lock(this) {
-           if (mspowerpoint == null) {
-                mspowerpoint = new PowerPoint.Application();
-                mspowerpoint.Visible = MsoTriState.msoTrue;
-                mspowerpoint.DisplayAlerts = PowerPoint.PpAlertLevel.ppAlertsNone;
-                mspowerpoint.AutomationSecurity = MsoAutomationSecurity.msoAutomationSecurityForceDisable;
-                
-                //No way to do this in powerpoint, it seems
-                //mspowerpoint.?Path? = Directory.GetCurrentDirectory();
-            }
-        }
-    }
+   
     
     public async Task<dynamic> word(dynamic opts) {
     
@@ -140,31 +128,7 @@ public class Startup
         });
     }
     
-    public async Task<dynamic> powerPoint(dynamic opts) {
-    
-        var file = Path.GetFullPath(opts.input as string);
-        var pdfFile = Path.GetFullPath(opts.output as string);
-          
-        return await scheduler.StartNew(() => {
-            Thread.Sleep(100);
-            CreatePowerPoint();
-            
-            var presso = mspowerpoint.Presentations.Open(file, MsoTriState.msoTrue, WithWindow: MsoTriState.msoFalse);
-            Delay(0);
-            try {
-                Delay(1);
-              //  presso.ExportAsFixedFormat(pdfFile, PowerPoint.PpFixedFormatType.ppFixedFormatTypePDF, PowerPoint.PpFixedFormatIntent.ppFixedFormatIntentPrint);
-              presso.SaveAs(pdfFile, PowerPoint.PpSaveAsFileType.ppSaveAsPDF);
-                Delay(2);
-            } finally {
-                presso.Close();
-                Marshal.ReleaseComObject(presso);
-            }
-            
-            //closeInternal();
-            return pdfFile;
-        });
-    }
+   
     
     private void closeInternal() {
         Delay(4);
@@ -189,15 +153,7 @@ public class Startup
             msexcel = null;
         }
 
-        if (mspowerpoint != null) {
-            try {
-                mspowerpoint.Quit();
-            }
-            catch (Exception) { }
-          
-            Marshal.ReleaseComObject(mspowerpoint);
-            mspowerpoint = null;
-        }
+       
         
         Thread.Sleep(1000);
     }
