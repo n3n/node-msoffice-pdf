@@ -1,7 +1,7 @@
 var mso_pdf = require("./lib");
 var uuid = require("node-uuid");
 
-function excelToPdf(input) {
+module.exports = function excelToPdf(input) {
   return new Promise((resolve, reject) => {
     mso_pdf(null, function(error, office) {
       if (error) {
@@ -29,4 +29,4 @@ function excelToPdf(input) {
       });
     });
   });
-}
+};
