@@ -1,7 +1,7 @@
 var edge = require("edge-js");
 var path = require("path");
 
-module.exports = edge.func({
+const mso_pdf = edge.func({
   source: path.join(path.dirname(module.filename), "office.cs"),
   references: [
     "C:\\Windows\\assembly\\GAC_MSIL\\Microsoft.Office.Interop.Word\\15.0.0.0__71e9bce111e9429c\\Microsoft.Office.Interop.Word.dll",
@@ -11,3 +11,5 @@ module.exports = edge.func({
     "C:\\Windows\\assembly\\GAC_MSIL\\Microsoft.Vbe.Interop\\15.0.0.0__71e9bce111e9429c\\Microsoft.Vbe.Interop.dll"
   ]
 });
+
+module.exports = mso_pdf;
