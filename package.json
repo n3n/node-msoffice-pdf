@@ -1,9 +1,12 @@
 {
   "name": "node-msoffice-pdf",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Exports various microsoft office formats to pdfs",
   "author": "Stefanos Kornilios Mitsis Poiitidis (skmp@nillware.com)",
-  "files": [ "office.cs", "lib.js" ],
+  "files": [
+    "office.cs",
+    "lib.js"
+  ],
   "main": "lib.js",
   "scripts": {
     "test": "node testrunner.js"
@@ -17,10 +20,10 @@
     "pdf"
   ],
   "dependencies": {
-    "edge" : "*"
+    "edge-js": "^12.3.1"
   },
   "devDependencies": {
-    "node-uuid" : "*"
+    "node-uuid": "*"
   },
   "license": "MIT"
 }
